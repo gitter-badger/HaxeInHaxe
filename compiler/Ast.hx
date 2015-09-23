@@ -119,6 +119,64 @@ enum While_flag {
 	NormalWhile;
 	DoWhile;
 };
+typedef Type_path = {
+	tpackage : List<String>,
+	tname : String,
+	tparams : List<Type_param_or_const>,
+	tsub : Option<String>
+};
+enum Type_param_or_const {
+	TPType(value: Complex_type);
+	TPExpr(value: Expr);
+};
+enum Complex_type {
+	CTPath(value: Type_path);
+	CTAnonymous(value: List<Class_field>);
+	CTParent(value: Complex_type);
+	CTOptional(value: Complex_type);
+};
+typedef Func = {
+	f_params : List<Type_param>,
+	f_type : Option<Complex_type>,
+	f_expr : Option<Expr>
+};
+enum Expr_def {
+	EConst(value: Constant);
+	EParenthesis(value: Expr);
+	EArrayDecl(value: List<Expr>);
+	EBlock(value: List<Expr>);
+	EBreak;
+	EContinue;
+	EUntyped(value: Expr);
+	EThrow(value: Expr);
+	EDisplayNew(value: Type_path);
+};
+typedef Type_param = {
+	tp_name : String,
+	tp_params : List<Type_param>,
+	tp_constraints : List<Complex_type>,
+	tp_meta : Metadata
+};
+enum Access {
+	APublic;
+	APrivate;
+	AStatic;
+	AOverride;
+	ADynamic;
+	AInline;
+	AMacro;
+};
+enum Class_field_kind {
+	FFun(value: Func);
+};
+typedef Class_field = {
+	cff_name : String,
+	cff_doc : Documentation,
+	cff_pos : Pos,
+	cff_meta : Metadata,
+	cff_access : List<Access>,
+	cff_kind : Class_field_kind
+};
 enum Enum_flag {
 	EPrivate;
 	EExtern;
